@@ -72,7 +72,7 @@ app.get('/customer/:id', async (req,res) => {
         if(err)
         {
             console.log(err);
-            res.status(500).send("Error While fetching data")
+            res.status(500).send("Error While fetching Customer data")
         }
         else
         {
@@ -170,7 +170,14 @@ app.post('/custtran',(req,res) => {
 app.put('/customer/:id', function(req, res) {
     const cust = {
       contactno: req.body.contactno,
-      name: req.body.name
+      name: req.body.name,
+      address:
+      {
+        add1: req.body.address.add1,
+        add2: req.body.address.add2,
+        pincode: req.body.address.pincode 
+      },
+      active: req.body.active
     }
     Customer.update({_id: req.params.id}, cust, function(err, raw) {
         if(err)
@@ -210,4 +217,4 @@ mongoose.connect('mongodb://samadu:hajira@ds261247.mlab.com:61247/samadu',(err)=
         console.log('connected suucessfully')
     }
 })
-app.listen(3000)
+app.listen(process.env.PORT || 3000)
