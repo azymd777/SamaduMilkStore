@@ -17,14 +17,35 @@ app.get('/',(req,res) => {
 
 app.get('/user', async (req,res) => {
  
-    var user = await User.find({},{__v:0})
-    res.send(user);   
+    await User.find({},{__v:0},(err,result)=>
+    {
+        if(err)
+        {
+            console.log(err);
+            res.status(500).send("Error While fetching data")
+        }
+        else
+        {
+            res.status(200).send(result)
+        }
+    }) 
 })
 
 app.get('/customer', async (req,res) => {
  
-    var customer = await Customer.find({},{__v:0}).sort({name:1})
-    res.send(customer);   
+    await Customer.find({},{__v:0},(err,result)=>
+    {
+        if(err)
+        {
+            console.log(err);
+            res.status(500).send("Error While fetching data")
+        }
+        else
+        {
+            res.status(200).send(result)
+        }
+    }
+    ) 
 })
 app.post('/login', async (req,res) => {
     var logindata = req.body;
@@ -46,21 +67,56 @@ app.post('/login', async (req,res) => {
 })
 app.get('/customer/:id', async (req,res) => {
     
-    var customer = await Customer.findById(req.params.id,{__v:0})
-    res.send(customer);   
+    var customer = await Customer.findById(req.params.id,{__v:0},(err,result)=>
+    {
+        if(err)
+        {
+            console.log(err);
+            res.status(500).send("Error While fetching data")
+        }
+        else
+        {
+            res.status(200).send(result)
+        }
+    }
+    )
+
    
 })
 app.get('/custtran/:id', async (req,res) => {
     
-    var customertran = await Custtran.findById(req.params.id,{__v:0})
-    res.send(customertran);   
+    var customertran = await Custtran.findById(req.params.id,{__v:0},(err,result)=>
+    {
+        if(err)
+        {
+            console.log(err);
+            res.status(500).send("Error While fetching data")
+        }
+        else
+        {
+            res.status(200).send(result)
+        }
+    }
+    );   
    
 })
 
 app.get('/custtran', async (req,res) => {
  
-    var customertran = await Custtran.find({},{__v:0})
-    res.send(customertran);   
+    var customertran = await Custtran.find({},{__v:0},(err,result)=>
+    {
+        if(err)
+        {
+            console.log(err);
+            res.status(500).send("Error While fetching data")
+        }
+        else
+        {
+            res.status(200).send(result)
+        }
+    }
+    )
+  
 })
 app.post('/user',(req,res) => {
     var userdata = req.body
@@ -69,8 +125,12 @@ app.post('/user',(req,res) => {
     user.save((err,result)=>
     {
         if(err)
+        {
             console.log(err)
-            res.sendStatus(200);
+            res.status(500).send("Error While fetching data")
+        }
+        res.sendStatus(200)
+
     }
     )
 })
@@ -82,8 +142,11 @@ app.post('/customer',(req,res) => {
     customer.save((err,result)=>
     {
         if(err)
+        {
             console.log(err)
-            res.sendStatus(200);
+            res.status(500).send("Error While fetching data")
+        }
+        res.sendStatus(200)
     }
     )
 })
@@ -95,8 +158,11 @@ app.post('/custtran',(req,res) => {
     custtran.save((err,result)=>
     {
         if(err)
+        {
             console.log(err)
-            res.sendStatus(200);
+            res.status(500).send("Error While fetching data")
+        }
+        res.sendStatus(200)
     }
     )
 })
@@ -107,10 +173,15 @@ app.put('/customer/:id', function(req, res) {
       name: req.body.name
     }
     Customer.update({_id: req.params.id}, cust, function(err, raw) {
-      if (err) {
-        res.send(err);
-      }
-      res.send(raw);
+        if(err)
+        {
+            console.log(err);
+            res.status(500).send("Error While Updating data")
+        }
+        else
+        {
+            res.sendStatus(200)
+        }
     });
   });
 
@@ -120,10 +191,15 @@ app.put('/customer/:id', function(req, res) {
       ltr: req.body.ltr
     }
     Custtran.update({_id: req.params.id}, custtran, function(err, raw) {
-      if (err) {
-        res.send(err);
-      }
-      res.send(raw);
+        if(err)
+        {
+            console.log(err);
+            res.status(500).send("Error While Updating data")
+        }
+        else
+        {
+            res.sendStatus(200)
+        }
     });
   });
 
